@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AURA PRO BROWSER </title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: url("1.png") no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Search bar */
+    .search-container {
+      position: absolute;
+      top: 40px;
+      width: 50%;
+      max-width: 600px;
+    }
+
+    .search-bar {
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 40px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: 0.3s;
+    }
+
+    .search-bar:focus {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.02);
+    }
+
+    /* Dropdown history */
+    .history {
+      margin-top: 5px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 10px;
+      display: none;
+      color: white;
+    }
+
+    .history div {
+      padding: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .history div:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Shortcuts Grid */
+    .shortcuts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    /* Shortcut box */
+    .shortcut {
+      width: 160px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+      margin: auto;
+      text-decoration: none;
+    }
+
+    .shortcut:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Icon inside shortcut */
+    .shortcut img {
+      width: 60px;
+      height: 60px;
+    }
+
+    /* Name below shortcut */
+    .shortcut-name {
+      margin-top: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      color: white;
+    }
+
+    /* Credits Panel */
+    .credits {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      cursor: pointer;
+      color: white;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    .credits:hover {
+      color: #00e5ff;
+    }
+
+    .credits-panel {
+      position: absolute;
+      top: 60px;
+      right: 30px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 12px;
+      padding: 15px 25px;
+      color: white;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: 0.4s ease;
+      pointer-events: none;
+    }
+
+    .credits:hover + .credits-panel {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Search -->
+  <div class="search-container">
+    <input type="text" class="search-bar" id="search" placeholder="Enter search or web address">
+    <div class="history" id="history"></div>
+  </div>
+
+  <!-- Shortcuts -->
+  <div class="shortcuts">
+    <div>
+      <a href="https://www.youtube.com" class="shortcut">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">
+      </a>
+      <div class="shortcut-name">YouTube</div>
+    </div>
+    <div>
+      <a href="https://web.whatsapp.com" class="shortcut">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+      </a>
+      <div class="shortcut-name">WhatsApp</div>
+    </div>
+    <div>
+      <a href="https://www.instagram.com" class="shortcut">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png">
+      </a>
+      <div class="shortcut-name">Instagram</div>
+    </div>
+    <div>
+      <a href="https://www.netflix.com" class="shortcut">
+        <img src="https://cdn-icons-png.flaticon.com/512/732/732228.png">
+      </a>
+      <div class="shortcut-name">Netflix</div>
+    </div>
+    <div>
+      <a href="https://open.spotify.com" class="shortcut">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png">
+      </a>
+      <div class="shortcut-name">Spotify</div>
+    </div>
+    <div>
+      <a href="https://github.com" class="shortcut">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png">
+      </a>
+      <div class="shortcut-name">GitHub</div>
+    </div>
+    <div>
+      <a href="https://chat.openai.com" class="shortcut">
+        <img src="https://chat.openai.com/favicon.ico">
+      </a>
+      <div class="shortcut-name">ChatGPT</div>
+    </div>
+  </div>
+
+  <!-- Credits -->
+  <div class="credits"> Credits</div>
+  <div class="credits-panel">
+    <p>Developed by Jaiganesh</p>
+    <p>Agastya</p>
+    <p>Mahika</p>
+  </div>
+
+  <script>
+    const search = document.getElementById("search");
+    const historyBox = document.getElementById("history");
+    let searches = [];
+
+    search.addEventListener("keypress", function(e) {
+      if (e.key === "Enter" && search.value.trim() !== "") {
+        searches.unshift(search.value.trim());
+        historyBox.innerHTML = searches.map(s => `<div>${s}</div>`).join("");
+        window.location.href = "https://www.google.com/search?q=" + search.value.trim();
+        search.value = "";
+      }
+    });
+
+    search.addEventListener("focus", () => {
+      if (searches.length > 0) historyBox.style.display = "block";
+    });
+
+    search.addEventListener("blur", () => {
+      setTimeout(() => historyBox.style.display = "none", 200);
+    });
+  </script>
+
+</body>
+</html>
