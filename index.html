@@ -1,239 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>QuickTab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
+    :root { 
+      --pad: 40px;
+      --blur: 14px;
+      --glass-bg: rgba(255, 255, 255, 0.25); /* semi-transparent glass */
+    }
+
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
     }
 
     body {
-      height: 100vh;
-      background: url("1.png") no-repeat center center/cover;
+      height: 100vh; width: 100vw; overflow: hidden;
+      color: #fff;
+      background: #000 center/cover no-repeat fixed;
+      font-family: 'Poppins', -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      transition: opacity 1s ease, background-image 0.8s ease;
+      opacity: 0;
+    }
+
+    /* Clock (top-right) */
+    .clock {
+      position: absolute;
+      top: var(--pad);
+      right: var(--pad);
+      text-align: right;
+      text-shadow: 0 2px 18px rgba(0,0,0,.45);
+      user-select: none;
+    }
+    .clock .time {
+      font-size: 50px;
+      font-weight: 1;
+      letter-spacing: 1px;
+    }
+    .clock .date {
+      margin-top: 6px;
+      font-size: 18px;
+      opacity: .95;
+    }
+
+    /* Search container */
+    .search {
+      position: absolute;
+      top: 150px; /* slightly lower */
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      gap: 10px;
+      width: min(520px, 85vw);
+      backdrop-filter: blur(var(--blur));
+      border-radius: 50px;
+      padding: 6px 10px;
+      background: var(--glass-bg);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
 
-    /* Search bar */
-    .search-container {
-      position: absolute;
-      top: 40px;
-      width: 50%;
-      max-width: 600px;
-    }
-
-    .search-bar {
-      width: 100%;
-      padding: 15px 20px;
-      border-radius: 40px;
+    .search input {
+      flex: 1;
       border: none;
       outline: none;
+      padding: 14px 18px;
+      border-radius: 40px;
+      background: rgba(255,255,255,0.2);
+      color: #000; /* BLACK text for readability */
       font-size: 16px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      transition: 0.3s;
+      backdrop-filter: blur(var(--blur));
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .search-bar:focus {
-      background: rgba(255, 255, 255, 0.3);
-      transform: scale(1.02);
+    .search input:focus {
+      background: rgba(255,255,255,0.35);
     }
 
-    /* Dropdown history */
-    .history {
-      margin-top: 5px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 12px;
-      padding: 10px;
-      display: none;
-      color: white;
-    }
-
-    .history div {
-      padding: 8px;
+    /* Upload button */
+    .upload-btn {
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25) url('upload.png') center/50% no-repeat;
+      backdrop-filter: blur(var(--blur));
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35);
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
     }
 
-    .history div:hover {
-      background: rgba(255, 255, 255, 0.2);
+    .upload-btn:hover {
+      background-color: rgba(255,255,255,0.35);
+      transform: scale(1.05);
     }
 
-    /* Shortcuts Grid */
-    .shortcuts {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    .upload-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Footer info */
+    .footer {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-    }
-
-    /* Shortcut box */
-    .shortcut {
-      width: 160px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-      margin: auto;
-      text-decoration: none;
-    }
-
-    .shortcut:hover {
-      transform: scale(1.08);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-      background: rgba(255, 255, 255, 0.25);
-    }
-
-    /* Icon inside shortcut */
-    .shortcut img {
-      width: 60px;
-      height: 60px;
-    }
-
-    /* Name below shortcut */
-    .shortcut-name {
-      margin-top: 10px;
-      font-size: 15px;
-      font-weight: 500;
-      color: white;
-    }
-
-    /* Credits Panel */
-    .credits {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      cursor: pointer;
-      color: white;
-      font-size: 18px;
-      transition: 0.3s;
-    }
-
-    .credits:hover {
-      color: #00e5ff;
-    }
-
-    .credits-panel {
-      position: absolute;
-      top: 60px;
-      right: 30px;
-      background: rgba(0, 0, 0, 0.7);
+      left: var(--pad);
+      bottom: var(--pad);
+      background: rgba(0,0,0,.4);
+      padding: 8px 14px;
       border-radius: 12px;
-      padding: 15px 25px;
-      color: white;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: 0.4s ease;
-      pointer-events: none;
-    }
-
-    .credits:hover + .credits-panel {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      backdrop-filter: blur(6px);
+      font-size: 14px;
+      opacity: 0.9;
     }
   </style>
 </head>
 <body>
+  <!-- Clock -->
+  <div class="clock">
+    <div id="time" class="time">--:--</div>
+    <div id="date" class="date">Loading…</div>
+  </div>
 
   <!-- Search -->
-  <div class="search-container">
-    <input type="text" class="search-bar" id="search" placeholder="Enter search or web address">
-    <div class="history" id="history"></div>
+  <div class="search">
+    <input id="q" type="text" placeholder="Search or enter URL" />
+    <button class="upload-btn" id="uploadBtn" title="Upload"></button>
   </div>
 
-  <!-- Shortcuts -->
-  <div class="shortcuts">
-    <div>
-      <a href="https://www.youtube.com" class="shortcut">
-        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">
-      </a>
-      <div class="shortcut-name">YouTube</div>
-    </div>
-    <div>
-      <a href="https://web.whatsapp.com" class="shortcut">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
-      </a>
-      <div class="shortcut-name">WhatsApp</div>
-    </div>
-    <div>
-      <a href="https://www.instagram.com" class="shortcut">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png">
-      </a>
-      <div class="shortcut-name">Instagram</div>
-    </div>
-    <div>
-      <a href="https://www.netflix.com" class="shortcut">
-        <img src="https://cdn-icons-png.flaticon.com/512/732/732228.png">
-      </a>
-      <div class="shortcut-name">Netflix</div>
-    </div>
-    <div>
-      <a href="https://open.spotify.com" class="shortcut">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png">
-      </a>
-      <div class="shortcut-name">Spotify</div>
-    </div>
-    <div>
-      <a href="https://github.com" class="shortcut">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png">
-      </a>
-      <div class="shortcut-name">GitHub</div>
-    </div>
-    <div>
-      <a href="https://chat.openai.com" class="shortcut">
-        <img src="https://chat.openai.com/favicon.ico">
-      </a>
-      <div class="shortcut-name">ChatGPT</div>
-    </div>
-  </div>
-
-  <!-- Credits -->
-  <div class="credits"> Credits</div>
-  <div class="credits-panel">
-    <p>Developed by Jaiganesh</p>
-    <p>Agastya</p>
-    <p>Mahika</p>
-  </div>
+  <!-- Footer -->
+  <div class="footer">Developed by Jaiganesh, Agastya, Mahika</div>
 
   <script>
-    const search = document.getElementById("search");
-    const historyBox = document.getElementById("history");
-    let searches = [];
+    // Clock
+    function tick() {
+      const now = new Date();
+      const t = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const d = now.toLocaleDateString([], { weekday: 'long', day: 'numeric', month: 'long' });
+      time.textContent = t;
+      date.textContent = d;
+    }
+    setInterval(tick, 1000); tick();
 
-    search.addEventListener("keypress", function(e) {
-      if (e.key === "Enter" && search.value.trim() !== "") {
-        searches.unshift(search.value.trim());
-        historyBox.innerHTML = searches.map(s => `<div>${s}</div>`).join("");
-        window.location.href = "https://www.google.com/search?q=" + search.value.trim();
-        search.value = "";
+    // Search
+    q.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const s = q.value.trim();
+        if (!s) return;
+        const looksLikeUrl = /^(https?:\/\/)|(^[\w-]+\.[\w.-]+)/i.test(s);
+        window.location.href = looksLikeUrl
+          ? (s.startsWith('http') ? s : 'https://' + s)
+          : 'https://www.google.com/search?q=' + encodeURIComponent(s);
       }
     });
 
-    search.addEventListener("focus", () => {
-      if (searches.length > 0) historyBox.style.display = "block";
+    // Upload button click — open in same tab
+    document.getElementById('uploadBtn').addEventListener('click', () => {
+      window.location.href = 'https://www.google.com';
     });
 
-    search.addEventListener("blur", () => {
-      setTimeout(() => historyBox.style.display = "none", 200);
-    });
+    // Wallpaper (non-repeating)
+    (function setWallpaper() {
+      const url = `https://picsum.photos/1920/1080?random=${Math.floor(Math.random()*1000000)}`;
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        document.body.style.backgroundImage = `url('${img.src}')`;
+        document.body.style.opacity = '1';
+      };
+      img.onerror = () => {
+        const fallback = `linear-gradient(135deg, #0f172a, #1f2937, #111827)`;
+        document.body.style.background = fallback;
+        document.body.style.opacity = '1';
+      };
+    })();
   </script>
-
 </body>
 </html>
