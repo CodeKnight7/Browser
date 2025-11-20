@@ -1,167 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>QuickTab</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --pad:40px;
-  --glass-bg:rgba(255,255,255,0.18);
-  --transition-speed:0.35s;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{
-  font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  color:#fff;
-  background:#000 center/cover no-repeat fixed;
-  transition:opacity .8s ease,background-image .6s ease;
-  opacity:0;
-}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuickTab Panel</title>
 
-/* Clock */
-.clock{
-  position:absolute;top:var(--pad);right:var(--pad);
-  text-align:right;text-shadow:0 2px 18px rgba(0,0,0,.45);user-select:none;z-index:10;
-}
-.clock .time{font-size:50px;letter-spacing:1px}
-.clock .date{margin-top:6px;font-size:16px;opacity:.95}
-
-/* Search */
-.search{
-  position:absolute;top:150px;left:50%;transform:translateX(-50%);
-  display:flex;align-items:center;gap:10px;
-  width:min(520px,85vw);
-  padding:12px 18px;border-radius:50px;
-  background:var(--glass-bg);
-  box-shadow:0 8px 25px rgba(0,0,0,0.5);z-index:20;
-}
-.search input{
-  flex:1;padding:14px 18px;border-radius:40px;border:none;outline:none;
-  background:rgba(255,255,255,0.2);color:#000;font-size:16px;
-  box-shadow:inset 0 0 12px rgba(0,0,0,.25);
-  transition:background .3s ease,color .3s ease;
-}
-.search input:focus{background:rgba(255,255,255,0.35)}
-
-/* Footer */
-.footer{
-  position:absolute;left:var(--pad);bottom:var(--pad);
-  background:rgba(0,0,0,.4);padding:8px 14px;border-radius:12px;
-  font-size:14px;z-index:10;
-}
-
-/* Full panel (Shift+Space) */
-.full-panel{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  display:flex;justify-content:center;align-items:center;
-  gap:30px;
-  background:rgba(255,255,255,0.05);
-  opacity:0;pointer-events:none;
-  transition:opacity 0.45s ease,transform 0.45s ease;
-  transform:scale(0.97);
-  z-index:50;
-  flex-wrap:wrap;
-}
-.full-panel.show{
-  opacity:1;pointer-events:auto;
-  transform:scale(1);
-}
-
-/* Big rectangle buttons */
-.panel-btn{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  width:180px;height:180px;border-radius:20px;
-  background:var(--glass-bg);
-  border:none;cursor:pointer;
-  box-shadow:0 8px 30px rgba(0,0,0,.35);
-  transition:all 0.35s ease;
-  font-weight:600;color:#000;font-size:16px;text-align:center;
-}
-.panel-btn img{
-  width:60px;height:60px;margin-bottom:12px;object-fit:contain;
-}
-.panel-btn:hover{
-  transform:scale(1.08);
-  background:rgba(255,255,255,0.28);
-}
-
-/* Responsive */
-@media(max-width:520px){
-  .search{width:92vw}
-  .panel-btn{width:150px;height:150px;font-size:14px;}
-}
-</style>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-<body>
 
-<!-- Clock -->
-<div class="clock">
-  <div id="time" class="time">--:--</div>
-  <div id="date" class="date">Loading…</div>
-</div>
+<body class="dark">
 
-<!-- Search -->
-<div class="search" id="searchBar">
-  <input id="q" type="text" placeholder="Search or enter URL" />
-</div>
+  <!-- BOOKMARK BAR -->
+  <div class="bookmark-bar">
 
-<!-- Footer -->
-<div class="footer">Developed by Jaiganesh, Agastya, Mahika</div>
+    <!-- NEW GOOGLE BUTTON (NO TEXT) -->
+    <a class="bookmark-icon" href="https://google.com">
+      <img src="icons/grid.png">
+    </a>
 
-<!-- Full panel (Shift+Space) -->
-<div class="full-panel" id="fullPanel">
-  <button class="panel-btn" id="editBtn"><img src="edit.png" alt="Edit">Edit</button>
-  <button class="panel-btn" id="gameBtn"><img src="game.png" alt="Game">Games</button>
-  <button class="panel-btn" id="aiBtn"><img src="ai.png" alt="AI">AI</button>
-</div>
+    <a class="bookmark-item" href="https://youtube.com"><img src="icons/youtube.png"><span>YouTube</span></a>
+    <a class="bookmark-item" href="https://spotify.com"><img src="icons/spotify.png"><span>Spotify</span></a>
+    <a class="bookmark-item" href="https://github.com"><img src="icons/github.png"><span>GitHub</span></a>
+    <a class="bookmark-item" href="https://instagram.com"><img src="icons/instagram.png"><span>Instagram</span></a>
+    <a class="bookmark-item" href="https://web.whatsapp.com"><img src="icons/whatsapp.png"><span>WhatsApp</span></a>
+    <a class="bookmark-item" href="https://discord.com"><img src="icons/discord.png"><span>Discord</span></a>
+    <a class="bookmark-item" href="https://chatgpt.com"><img src="icons/chatgpt.png"><span>ChatGPT</span></a>
+  </div>
 
-<script>
-// Clock
-function tick(){
-  const now=new Date();
-  document.getElementById('time').textContent=now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  document.getElementById('date').textContent=now.toLocaleDateString([], {weekday:'long',day:'numeric',month:'long'});
-}
-setInterval(tick,1000); tick();
+  <!-- Wallpaper -->
+  <div class="wallpaper-container"></div>
 
-// Wallpaper
-(function setWallpaper(){
-  const url=`https://picsum.photos/1920/1080?random=${Math.floor(Math.random()*1000000)}`;
-  const img=new Image(); img.src=url;
-  img.onload=()=>{document.body.style.backgroundImage=`url('${img.src}')`;document.body.style.opacity='1';};
-  img.onerror=()=>{document.body.style.background='linear-gradient(135deg,#0f172a,#1f2937,#111827)';document.body.style.opacity='1';};
-})();
+  <!-- Clock -->
+  <div class="clock">
+    <div id="time" class="time"></div>
+    <div id="date" class="date"></div>
+  </div>
 
-// Search enter
-const q=document.getElementById('q');
-q.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    const s=q.value.trim();
-    if(!s)return;
-    const looksLikeUrl=/^(https?:\/\/)|(^[\w-]+\.[\w.-]+)/i.test(s);
-    window.location.href = looksLikeUrl?(s.startsWith('http')?s:'https://'+s):'https://www.google.com/search?q='+encodeURIComponent(s);
-  }
-});
+  <!-- Search -->
+  <div class="search">
+    <input id="q" type="text" placeholder="Search or enter URL" autocomplete="off">
+  </div>
 
-// Full panel toggle (Shift+Space)
-const fullPanel=document.getElementById('fullPanel');
-document.addEventListener('keydown',e=>{
-  const active=document.activeElement;
-  const isTyping=active&&(active.tagName==='INPUT'||active.tagName==='TEXTAREA');
-  if(e.shiftKey && e.code==='Space' && !isTyping){
-    e.preventDefault();
-    fullPanel.classList.toggle('show');
-  }
-});
+  <div class="footer">Developed by Jaiganesh, Agastya, Mahika</div>
 
-// Panel buttons open in same tab
-document.getElementById('editBtn').addEventListener('click',()=>{window.location.href='https://codeknight7.github.io/PDF'});
-document.getElementById('gameBtn').addEventListener('click',()=>{window.location.href='https://www.google.com/logos/2017/cricket17/cricket17.html'});
-document.getElementById('aiBtn').addEventListener('click',()=>{window.location.href='https://chatgpt.com/'});
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
