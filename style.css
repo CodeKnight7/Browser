@@ -1,0 +1,152 @@
+:root {
+  --pad: 40px;
+
+  --dark-bar: #000000dd;
+  --light-bar: #ffffffdd;
+}
+
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  opacity: 0;
+  transition: opacity .6s ease;
+  overflow: hidden;
+}
+
+/* ================= BOOKMARK BAR ================= */
+.bookmark-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 55px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding-left: 25px;
+
+  background: var(--dark-bar);
+  z-index: 20;
+}
+
+body.light .bookmark-bar { background: var(--light-bar); }
+
+/* GOOGLE ICON BUTTON (NO TEXT) */
+.bookmark-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: 0.25s;
+}
+
+.bookmark-icon img {
+  width: 22px;
+  height: 22px;
+}
+
+.bookmark-icon:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+/* BOOKMARK ITEMS (NO BORDER, CLEAN) */
+.bookmark-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 14px;
+  border-radius: 10px;
+
+  text-decoration: none;
+  font-size: 13px;
+
+  transition: 0.25s;
+  color: white;
+}
+
+body.light .bookmark-item { color: black; }
+
+/* NO BORDER — CLEAN LOOK */
+.bookmark-item:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+.bookmark-item img {
+  width: 20px;
+  height: 20px;
+}
+
+/* =============== WALLPAPER =============== */
+.wallpaper-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+/* =============== CLOCK =============== */
+.clock {
+  position: absolute;
+  top: 100px;
+  right: var(--pad);
+  text-align: right;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+
+.clock .time { font-size: 48px; }
+.clock .date { font-size: 16px; margin-top: 4px; }
+
+/* =============== SEARCH BAR =============== */
+.search {
+  position: absolute;
+  top: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(500px, 85vw);
+
+  padding: 14px 20px;
+  border-radius: 50px;
+  display: flex;
+
+  background: #ffffffdd;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+}
+
+.search input {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 45px;
+  border: none;
+  outline: none;
+  font-size: 17px;
+}
+
+/* FOOTER */
+.footer {
+  position: absolute;
+  left: var(--pad);
+  bottom: var(--pad);
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+
+  color: white;
+  background: rgba(0,0,0,0.55);
+}
+
+body.light .footer {
+  color: black;
+  background: rgba(255,255,255,0.75);
+}
